@@ -1,0 +1,7 @@
+version: "3.8"
+services:
+  web:
+    build: .
+    image: 'hackathon-z-weed-13'
+    ports:
+      - "8000:8000"
