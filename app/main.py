@@ -1,9 +1,10 @@
 import os
 from typing import Optional
 
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile, File
 from pydantic import BaseModel
 from dotenv import dotenv_values
+
 
 config = dotenv_values(".env")
 
@@ -11,7 +12,6 @@ config = dotenv_values(".env")
 # path = os.environ.get('PATH')
 path = config['PATH']
 app = FastAPI()
-
 
 @app.get("/")
 def read_root():
@@ -39,3 +39,7 @@ def predict(payload: Payload):
             "score": 0.63508011493555
         }]
     }
+
+@app.post("/testUpload")
+def testUpload(file: UploadFile = File(...)):
+    return { "file_name": file.filename }
