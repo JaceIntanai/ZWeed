@@ -1,6 +1,6 @@
 fastapi==0.68.1
 uvicorn==0.15.0
 python-dotenv
-python-multipart==0.0.5
-torchvision==0.9.1
-efficientnet-pytorch==0.7.1
+requests
+Pillow==8.4.0
+urllib.request==3.10.1
