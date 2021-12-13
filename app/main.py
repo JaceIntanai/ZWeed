@@ -1,18 +1,12 @@
-
-import numpy as np
-
 from actions import BaseActions
 from schemas import Payload
 from urllib.parse import urlparse
 from fastapi import FastAPI
-from pydantic import BaseModel
 from dotenv import dotenv_values
-
-
 
 config = dotenv_values(".env")
 app = FastAPI()
-
+path = config['PATH']
 
 @app.get("/")
 def index():
