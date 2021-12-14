@@ -1,6 +1,7 @@
 fastapi==0.68.1
 uvicorn==0.15.0
 python-dotenv
-requests
 Pillow==8.4.0
-urllib.request==3.10.1
+urllib3==1.26.7
+opencv-python==4.5.4.60
+numpy==1.21.4

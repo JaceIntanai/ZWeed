@@ -2,10 +2,10 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from dotenv import dotenv_values
 
-from actions import BaseActions
-from schemas import Payload
+from . import actions
+from . import schemas
 
-config = dotenv_values("../.env")
+config = dotenv_values(".env")
 path = config['PATH']
 app = FastAPI()
 
@@ -21,5 +21,5 @@ class Payload(BaseModel):
 
 
 @app.post("/"+path+"/predict")
-def predict(payload: Payload):
-    return BaseActions.predict(payload)
+def predict(payload: schemas.Payload):
+    return actions.BaseActions.predict(payload)

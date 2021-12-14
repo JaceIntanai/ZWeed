@@ -1,4 +1,4 @@
-from schemas import Payload
+from . import schemas
 from urllib.request import urlopen
 
 import cv2
@@ -16,7 +16,7 @@ class BaseActions:
 
         return img
 
-    def predict(payload: Payload):
+    def predict(payload: schemas.Payload):
         img = BaseActions.getImageFromUrl(payload.url)
         ##################################
         cv2.imwrite('test.png', img)
