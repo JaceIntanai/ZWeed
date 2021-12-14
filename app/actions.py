@@ -1,4 +1,5 @@
 from . import schemas
+from . import predict
 from urllib.request import urlopen
 
 import cv2
@@ -17,10 +18,12 @@ class BaseActions:
         return img
 
     def predict(payload: schemas.Payload):
-        img = BaseActions.getImageFromUrl(payload.url)
+        frame = BaseActions.getImageFromUrl(payload.url)
+        # pass
+        # result = predict.run_image(img, payload.image_id)
         ##################################
-        cv2.imwrite('test.png', img)
-
+        # cv2.imwrite('test.png', frame)
+        
         ### example output ###
         return {
             "image_id": payload.image_id,
@@ -32,6 +35,6 @@ class BaseActions:
                     "w": 1050.0986882341442,
                     "h": 525.3333333333333
                 },
-                "score": 0.63508011493555
+                "score": 0.93508011493555
             }]
         }
