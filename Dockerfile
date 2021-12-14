@@ -1,5 +1,5 @@
-# FROM python:3.8
-FROM pytorch/pytorch
+FROM python:3.8
+# FROM pytorch/pytorch
 
 WORKDIR app
 
