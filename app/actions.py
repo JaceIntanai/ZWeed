@@ -1,25 +1,27 @@
 from schemas import Payload
+from urllib.request import urlopen
 
-class BaseActions():
+import cv2
+import numpy as np
+
+class BaseActions:
 
     def __init__(self):
         pass
 
-    def getImageFromUrl(self, url: str):
-        req = urllib.request.urlopen(url)
+    def getImageFromUrl(url: str):
+        req = urlopen(url)
         arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
         img = cv2.imdecode(arr, -1)
 
         return img
 
-    def predict(self, payload: Payload):
-        # req = urllib.request.urlopen(payload.url)
-        # arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
-        # img = cv2.imdecode(arr, -1)
-        img = self.getImageFromUrl(payload.url)
+    def predict(payload: Payload):
+        img = BaseActions.getImageFromUrl(payload.url)
+        ##################################
+        cv2.imwrite('test.png', img)
 
-        cv2.imwrite('dd.png', img)
-
+        ### example output ###
         return {
             "image_id": payload.image_id,
             "bbox_list": [{
