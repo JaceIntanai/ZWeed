@@ -20,6 +20,7 @@ class Payload(BaseModel):
     image_id: str
 
 
-@app.post("/"+path+"/predict")
+# @app.post("/"+path+"/predict")
+@app.post("/test/predict")
 def predict(payload: schemas.Payload):
     return actions.BaseActions.predict(payload)

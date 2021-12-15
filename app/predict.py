@@ -2,15 +2,16 @@
 # from picamera import PiCamera
 import cv2, numpy as np
 # from imutils.video import FPS
-import argparse
+# import argparse
 
-ap = argparse.ArgumentParser()
-ap.add_argument("-i", "--input", required=True, help="path to the input video/image/ file or type webcam to open your webcam")
-ap.add_argument("-m", "--model", required=True, help="specify preferred model type: yolov4, \
-    yolov4-tiny, yolov4-csp, yolov4x-mish")
-args = vars(ap.parse_args())
+# ap = argparse.ArgumentParser()
+# ap.add_argument("-i", "--input", required=True, help="path to the input video/image/ file or type webcam to open your webcam")
+# ap.add_argument("-m", "--model", required=True, help="specify preferred model type: yolov4, \
+#     yolov4-tiny, yolov4-csp, yolov4x-mish")
+# args = vars(ap.parse_args())
 
-yolo = cv2.dnn.readNet(args["model"] + "_training_4000.weights", args["model"] + "_training.cfg")
+# yolo = cv2.dnn.readNet(args["model"] + "_training_4000.weights", args["model"] + "_training.cfg")
+yolo = cv2.dnn.readNet("yolov4-tiny_training_best.weights", "yolov4-tiny_training.cfg")
 
 classes = ["pipe", "corner", "flange", "anode"]
 
