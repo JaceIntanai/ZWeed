@@ -14,14 +14,12 @@ class BaseActions:
         req = urlopen(url)
         arr = np.asarray(bytearray(req.read()), dtype=np.uint8)
         img = cv2.imdecode(arr, -1)
-
         return img
 
     def predict(payload: schemas.Payload):
         frame = BaseActions.getImageFromUrl(payload.url)
         # pass
         result = predict.run_image(frame, payload.image_id)
-        print('11111', result)
         return result
         ##################################
         # cv2.imwrite('test.png', frame)
