@@ -1,6 +1,7 @@
 # from picamera.array import PiRGBArray
 # from picamera import PiCamera
-import cv2, numpy as np
+import cv2, numpy as np, os
+import json5
 # from imutils.video import FPS
 # import argparse
 
@@ -11,33 +12,33 @@ import cv2, numpy as np
 # args = vars(ap.parse_args())
 
 # yolo = cv2.dnn.readNet(args["model"] + "_training_4000.weights", args["model"] + "_training.cfg")
-yolo = cv2.dnn.readNet("yolov4-tiny_training_best.weights", "yolov4-tiny_training.cfg")
+current_dir = os.getcwd()
+cfg = os.path.join("yolov4-tiny_training.cfg")
+weights = os.path.join("yolov4-tiny_training_1000.weights")
+
+yolo = cv2.dnn.readNetFromDarknet(cfg, weights)
 
 classes = ["pipe", "corner", "flange", "anode"]
+#classes = ["Defective", "Normal"]
 
 layer_names = yolo.getLayerNames()
-output_layers = [layer_names[i[0] - 1] for i in yolo.getUnconnectedOutLayers()]
-colors = np.random.uniform(0, 255, size=(len(classes), 3))
-font = cv2.FONT_HERSHEY_PLAIN
+output_layers = [layer_names[i - 1] for i in yolo.getUnconnectedOutLayers()]
+#colors = np.random.uniform(0, 255, size=(len(classes), 3))
+#font = cv2.FONT_HERSHEY_PLAIN
 
 # fps = None
 
 def run_model(frame, image_id):
-    # global fps
-    # fps = FPS().start()
 
-    # height, width = frame.shape[:2]
-    cv2.resize(frame, (512, 512))
+    height, width = frame.shape[:2]
+
     # if width > 512 or height > 512:
     #     frame = cv2.resize(frame, (512, int(height*(512/width)))) if height > width \
     #         else cv2.resize(frame, (int(width*(512/height)), 512))
+    image = cv2.resize(frame, (512, 512))
     blob = cv2.dnn.blobFromImage(frame, 1/255.0, (512, 512), swapRB=True, crop=False)
     yolo.setInput(blob)
     outs = yolo.forward(output_layers)
-
-    # height, width = frame.shape[:2]
-    height = 512
-    width = 512
 
     # Showing information on the screen
     class_ids = []
@@ -59,7 +60,7 @@ def run_model(frame, image_id):
                 x = int(center_x - (w / 2))
                 y = int(center_y - (h / 2))
 
-                boxes.append([x, y, int(w), int(h), confidence])
+                boxes.append([x, y, int(w), int(h)])
                 confidences.append(float(confidence))
                 class_ids.append(class_id)
 
@@ -69,55 +70,37 @@ def run_model(frame, image_id):
 
     for i in range(len(boxes)):
         if i in indexes:
-            x, y, w, h, confidence = boxes[i]
+            x, y, w, h = boxes[i]
             data = { 
-                "category_id": class_ids[i],
+                "category_id": int(class_ids[i]),
                 "bbox": {
-                    "x": x,
-                    "y": y,
-                    "w": w,
-                    "h": h
+                    "x": int(x),
+                    "y": int(y),
+                    "w": int(w),
+                    "h": int(h)
                 },
-                "score": confidence
+                "score": confidences[i]
             }
-
             bbox_list.append(data)
 
             # color = colors[class_ids[i]]
             # cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
             # cv2.putText(frame, classes[class_ids[i]], (x , y - 7), font, 0.5, color, 1)
-    
-    return {
+    #cv2.imshow('frame', frame)
+    res = {
             "image_id": image_id,
             "bbox_list": bbox_list
         }
-    # cv2.imshow('frame', frame)
-    # fps.update()
+    return res
 
-# def run_video():
-#     global fps
-#     vid = cv2.VideoCapture(args["input"])
-
-#     if not vid.isOpened():
-#         print("Error opening file")
-
-#     while vid.isOpened():
-#         ret, frame = vid.read()
-#         if not ret:
-#             break
-#         run_model(frame)
-#         key = cv2.waitKey(1) & 0xFF
-#         if key == ord("q"):
-#             break
-#     fps.stop()
-#     vid.release()
 
 def run_image(frame, image_id):
-    # global fps
     # frame = np.array(cv2.imread(args["input"]))
     return run_model(frame, image_id)
-    # fps.stop()
-    # cv2.waitKey(0)
+    #cv2.waitKey(0)
+
+#image = cv2.imread("/Users/pin/Documents/Hackathon/dataset_v1.0/images/20201107122805838.png")
+#run_image(image, 1)
 
 # if args["input"] == 'webcam':
     # initialize the camera and grab a reference to the raw camera capture

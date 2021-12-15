@@ -5,3 +5,6 @@ services:
     image: 'hackathon-z-weed-13'
     ports:
       - "8000:8000"
+
+    environment:
+      - PYTHONUNBUFFERED=1
