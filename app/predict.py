@@ -2,7 +2,7 @@ import cv2, numpy as np, os
 
 current_dir = os.getcwd()
 cfg = os.path.join("yolov4-tiny_training.cfg")
-weights = os.path.join("yolov4-tiny_training_1000.weights")
+weights = os.path.join("yolov4-tiny_training_last.weights")
 
 yolo = cv2.dnn.readNetFromDarknet(cfg, weights)
 
