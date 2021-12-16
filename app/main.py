@@ -1,16 +1,12 @@
-import os
-from typing import Optional
-
 from fastapi import FastAPI
-from pydantic import BaseModel
 from decouple import config
 from . import actions
 from . import schemas
 
 
-# path = config('path')
+path = config('path')
 # TODO: For local testing, comment out the above lines and uncomment the below line.
-path = 'test'
+# path = 'test'
 
 app = FastAPI()
 
