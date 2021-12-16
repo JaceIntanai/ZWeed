@@ -49,30 +49,33 @@ def run_model(frame, image_id):
     indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.3)
     bbox_list = []
 
-    for i in range(len(boxes)):
-        if i in indexes:
-            x, y, w, h = boxes[i]
-            data = { 
-                "category_id": int(class_ids[i]),
-                "bbox": {
-                    "x": int(x),
-                    "y": int(y),
-                    "w": int(w),
-                    "h": int(h)
-                },
-                "score": confidences[i]
-            }
-            bbox_list.append(data)
+    if (len(boxes) > 0) :
+        for i in range(len(boxes)):
+            if i in indexes:
+                x, y, w, h = boxes[i]
+                data = { 
+                    "category_id": int(class_ids[i]),
+                    "bbox": {
+                        "x": int(x),
+                        "y": int(y),
+                        "w": int(w),
+                        "h": int(h)
+                    },
+                    "score": confidences[i]
+                }
+                bbox_list.append(data)
 
-            # color = colors[class_ids[i]]
-            # cv2.rectangle(frame, (x, y), (x + w, y + h), color, 2)
-            # cv2.putText(frame, classes[class_ids[i]], (x , y - 7), font, 0.5, color, 1)
-    #cv2.imshow('frame', frame)
-    res = {
+        res = {
+                "image_id": image_id,
+                "bbox_list": bbox_list
+            }
+        return res
+    
+    else :
+        return {
             "image_id": image_id,
-            "bbox_list": bbox_list
+            "bbox_list": []
         }
-    return res
 
 
 def run_image(frame, image_id):
