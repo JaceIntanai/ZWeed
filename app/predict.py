@@ -81,5 +81,6 @@ def run_model(frame, image_id):
 
 
 def run_image(frame, image_id):
+    cv2.imwrite('sample_frame.png', frame)
     return run_model(frame, image_id)
     
