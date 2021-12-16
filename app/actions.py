@@ -11,8 +11,6 @@ class BaseActions:
         pass
 
     def preprocessing(img_array: any):
-        print(img_array)
-        # image = cv2.imread('all_datasets/20201110122206408.png')
         rgb = cv2.cvtColor(img_array, cv2.COLOR_BGR2RGB)
         clahe = cv2.createCLAHE(clipLimit=5.0, tileGridSize=(8,8))
         r = rgb[:,:,0]
@@ -25,11 +23,6 @@ class BaseActions:
         rgbArray[..., 0] = r_c
         rgbArray[..., 1] = g_c
         rgbArray[..., 2] = b_c
-        print('----start----')
-        print('1111 rgbArray ==> ', rgbArray)
-        print('----')
-        # cv2.imwrite('rgb.png', rgbArray)
-        cv2.imwrite('/Users/mai/arv-hackathon/code/ZWeed/sample_out_1.png', rgbArray)
 
         return rgbArray
 
@@ -40,7 +33,6 @@ class BaseActions:
 
         ###########
         img_preprocessing = BaseActions.preprocessing(img)
-        cv2.imwrite('/Users/mai/arv-hackathon/code/ZWeed/sample_out_preprocessing.png', img_preprocessing)
         ##########
         # return img
         return img_preprocessing
