@@ -26,27 +26,29 @@ def run_model(frame, image_id):
     confidences = []
     boxes = []
 
-    for out in outs:
-        for detection in out:
-            scores = detection[5:]
-            class_id = np.argmax(scores) 
-            confidence = scores[class_id]
-            if confidence > 0.5:
-                # Object detected
+    if (len(outs) > 0) :
+        for out in outs:
+            for detection in out:
+                scores = detection[5:]
+                class_id = np.argmax(scores) 
+                confidence = scores[class_id]
+                if confidence > 0.5:
+                    # Object detected
 
-                box = detection[0:4] * np.array([width, height, width, height])
-                (center_x, center_y, w, h) = box
+                    box = detection[0:4] * np.array([width, height, width, height])
+                    (center_x, center_y, w, h) = box
 
-                # Rectangle coordinates
-                x = int(center_x - (w / 2))
-                y = int(center_y - (h / 2))
+                    # Rectangle coordinates
+                    x = int(center_x - (w / 2))
+                    y = int(center_y - (h / 2))
 
-                boxes.append([x, y, int(w), int(h)])
-                confidences.append(float(confidence))
-                class_ids.append(class_id)
+                    boxes.append([x, y, int(w), int(h)])
+                    confidences.append(float(confidence))
+                    class_ids.append(class_id)
 
-    # confidence = 0.5 while threshold = 0.3
-    indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.3)
+        # confidence = 0.5 while threshold = 0.3
+        indexes = cv2.dnn.NMSBoxes(boxes, confidences, 0.5, 0.3)
+    
     bbox_list = []
 
     if (len(boxes) > 0) :
