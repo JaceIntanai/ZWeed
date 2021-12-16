@@ -1,7 +1,6 @@
 # from picamera.array import PiRGBArray
 # from picamera import PiCamera
 import cv2, numpy as np, os
-import json5
 # from imutils.video import FPS
 # import argparse
 
