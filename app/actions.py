@@ -20,9 +20,9 @@ class BaseActions:
         g_c = clahe.apply(g)
         b_c = clahe.apply(b)
         rgbArray = np.zeros(img_array.shape, 'uint8')
-        rgbArray[..., 0] = r_c
+        rgbArray[..., 0] = b_c
         rgbArray[..., 1] = g_c
-        rgbArray[..., 2] = b_c
+        rgbArray[..., 2] = r_c
 
         return rgbArray
 
