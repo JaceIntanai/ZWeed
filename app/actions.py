@@ -17,14 +17,18 @@ class BaseActions:
         g = rgb[:,:,1]
         b = rgb[:,:,2]
         r_c = clahe.apply(r)
-        g_c = clahe.apply(g)
+        # g_c = clahe.apply(g)
+        # r_c = r
+        g_c = cv2.equalizeHist(g)
         b_c = clahe.apply(b)
         rgbArray = np.zeros(img_array.shape, 'uint8')
-        rgbArray[..., 0] = b_c
+        rgbArray[..., 0] = r_c
         rgbArray[..., 1] = g_c
-        rgbArray[..., 2] = r_c
+        rgbArray[..., 2] = b_c
 
-        return rgbArray
+        gray = cv2.cvtColor(rgbArray, cv2.COLOR_RGB2GRAY)
+        output_image = cv2.cvtColor(gray, cv2.COLOR_GRAY2RGB)
+        return output_image
 
     def getImageFromUrl(url: str):
         req = urlopen(url)
@@ -34,7 +38,6 @@ class BaseActions:
         ###########
         img_preprocessing = BaseActions.preprocessing(img)
         ##########
-        # return img
         return img_preprocessing
 
     def predict(payload: schemas.Payload):
